@@ -117,8 +117,7 @@ dependencies {
 
 
     implementation (Navigation.navigationCompose)
-    implementation (Navigation.composeDestinations)
-    ksp (Navigation.destinationsKsp)
+
 
 
     testImplementation("junit:junit:4.13.2")

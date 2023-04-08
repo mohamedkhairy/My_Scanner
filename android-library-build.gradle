@@ -1,0 +1,79 @@
+// build.gradle for android libraries that contain UI
+import dependencies.BuildVersion
+import dependencies.AndroidX
+import dependencies.Google
+import dependencies.Hilt
+import dependencies.Kotlinx
+import dependencies.Ktor
+import dependencies.Serialization
+import dependencies.Kotlin
+import dependencies.Compose
+import dependencies.Coil
+import dependencies.Navigation
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion BuildVersion.compileSdk
+
+    defaultConfig {
+        minSdkVersion BuildVersion.minSdk
+        targetSdkVersion BuildVersion.targetSdk
+        versionCode BuildVersion.versionCode
+        versionName BuildVersion.versionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+//        useIR = true
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion Compose.compose_version
+        kotlinCompilerVersion Kotlin.version
+    }
+    packagingOptions {
+        exclude("META-INF/AL2.0")
+        exclude("META-INF/LGPL2.1")
+    }
+}
+
+dependencies{
+
+    implementation AndroidX.INSTANCE.coreKtx
+    implementation AndroidX.INSTANCE.appCompat
+    implementation AndroidX.INSTANCE.lifecycleVmKtx
+
+    implementation Compose.INSTANCE.composeActivity
+    implementation Compose.INSTANCE.composeUi
+    implementation Compose.INSTANCE.composeMaterial
+    implementation Compose.INSTANCE.composeTools
+    implementation Navigation.INSTANCE.navigationCompose
+
+
+    implementation Google.INSTANCE.material
+
+    implementation Hilt.INSTANCE.android
+    implementation Hilt.INSTANCE.hiltNavigation
+    kapt Hilt.INSTANCE.compiler
+
+
+
+
+
+}

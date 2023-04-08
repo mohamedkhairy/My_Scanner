@@ -7,7 +7,7 @@ import org.gradle.tooling.model.gradle.GradleBuild
 object Compose {
 
 
-    private const val compose_version = "1.2.0"
+     const val compose_version = "1.2.0"
 
 
     val composeUi by lazy { "androidx.compose.ui:ui:$compose_version" }

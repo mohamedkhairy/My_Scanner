@@ -14,3 +14,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "My Scanner"
 include(":app")
+include(":core")
+include(":feature")
+include(":feature:Handla")
+include(":feature:CameraScanner")
