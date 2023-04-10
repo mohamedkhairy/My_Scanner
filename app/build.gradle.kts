@@ -9,6 +9,7 @@ import dependencies.Kotlin
 import dependencies.Compose
 import dependencies.Coil
 import dependencies.Navigation
+import dependencies.Modules
 
 
 
@@ -80,6 +81,11 @@ android {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+
+    implementation(project(Modules.core))
+    implementation(project(Modules.featureHandla))
+    implementation(project(Modules.featureCameraScanner))
+
     implementation (Kotlin.kotlinStdlib)
 
     implementation(AndroidX.constraintlayout)
@@ -103,8 +109,11 @@ dependencies {
     implementation(Kotlinx.coroutinesCore)
     implementation(Compose.composeUi)
     implementation(Compose.composeMaterial)
-    implementation(Compose.composeTools)
+    implementation(Compose.systemUiController)
     implementation(Compose.composeActivity)
+
+    debugImplementation(Compose.composeTools)
+    implementation(Compose.pewviewTools)
 
 
     implementation(Serialization.serialization)
@@ -117,7 +126,6 @@ dependencies {
 
 
     implementation (Navigation.navigationCompose)
-
 
 
     testImplementation("junit:junit:4.13.2")
