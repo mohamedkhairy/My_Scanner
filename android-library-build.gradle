@@ -62,8 +62,13 @@ dependencies{
     implementation Compose.INSTANCE.composeActivity
     implementation Compose.INSTANCE.composeUi
     implementation Compose.INSTANCE.composeMaterial
-    implementation Compose.INSTANCE.composeTools
+    debugImplementation Compose.INSTANCE.composeTools
+    implementation Compose.INSTANCE.pewviewTools
+    implementation Compose.INSTANCE.systemUiController
+
     implementation Navigation.INSTANCE.navigationCompose
+
+
 
 
     implementation Google.INSTANCE.material
