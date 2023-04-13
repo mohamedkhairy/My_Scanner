@@ -13,14 +13,19 @@ private val DarkColorPalette = darkColors(
     primary = Purple200,
     primaryVariant = Purple700,
     secondary = Teal200,
-    background =Snow_bg
+    background =Snow_bg,
+    surface = trans_bg
+
+
 )
 
 private val LightColorPalette = lightColors(
     primary = Purple500,
     primaryVariant = Purple700,
     secondary = Teal200,
-    background =Snow_bg
+    background =Snow_bg,
+    surface = trans_bg
+
 
 
     /* Other default colors to override
@@ -44,7 +49,7 @@ fun MyScannerTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composa
     val systemUiController = rememberSystemUiController()
     SideEffect {
         systemUiController.setStatusBarColor(
-            color = LightColorPalette.background,
+            color = Color.White,
             darkIcons = true
         )
     }
