@@ -4,24 +4,22 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterEnd
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.core.domain.navigation.Screen
 import com.example.handla.R
 
 @Composable
-fun HandlaScreen(onScannerClick:() -> Unit) {
+fun HandlaScreen(navController: NavController) {
 
     Column(
         modifier = Modifier
@@ -31,6 +29,7 @@ fun HandlaScreen(onScannerClick:() -> Unit) {
 
 
     ) {
+
 
 
 
@@ -64,13 +63,13 @@ fun HandlaScreen(onScannerClick:() -> Unit) {
                     modifier = Modifier
                         .size(30.dp)
                         .padding(8.dp)
-                        .clickable { onScannerClick() }
+                        .clickable {
+                            navController.navigate(Screen.Scanner.route)
+                        }
 
                 )
             }
         }
-
-
 
     }
 }
@@ -79,5 +78,5 @@ fun HandlaScreen(onScannerClick:() -> Unit) {
 @Preview
 @Composable
 fun ComposablePreview() {
-    HandlaScreen(){}
+//    HandlaScreen()
 }
