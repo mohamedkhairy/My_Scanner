@@ -10,21 +10,27 @@ import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
+    primary = fern_green,
+    primaryVariant = light_green,
     secondary = Teal200,
     background =Snow_bg,
-    surface = trans_bg
+    onBackground = ever_green,
+    surface = trans_bg,
+    onSurface = Color.White,
 
 
-)
+    )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
+    primary = fern_green,
+    primaryVariant = light_green,
     secondary = Teal200,
     background =Snow_bg,
-    surface = trans_bg
+    onBackground = ever_green,
+    surface = trans_bg,
+    onSurface = Color.White,
+
+
 
 
 
@@ -49,7 +55,7 @@ fun MyScannerTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composa
     val systemUiController = rememberSystemUiController()
     SideEffect {
         systemUiController.setStatusBarColor(
-            color = Color.White,
+            color = Snow_bg,
             darkIcons = true
         )
     }

@@ -13,9 +13,5 @@ val ever_green = Color(0xFF005537)
 val light_green = Color(0xFFE8F2D2)
 
 
-//val fern_green = Color(0xFF00AA46)
-//val fern_green = Color(0xFF00AA46)
-//val fern_green = Color(0xFF00AA46)
-
 
 
