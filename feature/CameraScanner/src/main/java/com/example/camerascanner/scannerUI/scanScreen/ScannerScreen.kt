@@ -5,6 +5,9 @@ import android.Manifest
 import android.app.Activity
 import android.util.Log
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -34,6 +37,7 @@ import com.example.camerascanner.scannerUI.component.CameraFocus
 import com.example.camerascanner.scannerUI.component.HeaderScreen
 import com.example.camerascanner.scannerUI.core.ProductInformation
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionRequired
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.common.util.concurrent.ListenableFuture
@@ -70,6 +74,7 @@ fun ScannerScreen(navController: NavController) {
         }
 
     }
+
     val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
     SideEffect {
         cameraPermissionState.launchPermissionRequest()
@@ -83,8 +88,17 @@ fun ScannerScreen(navController: NavController) {
             Box {
 
 
+                PermissionRequired(
+                    permissionState = cameraPermissionState,
+                    permissionNotGrantedContent = { /* ... */ },
+                    permissionNotAvailableContent = {
+                        Toast.makeText(LocalContext.current, "Need Camera permission from settings", Toast.LENGTH_SHORT).show()
+                    }
+                ) {
+                    CameraPreview(screenViewModel)
+                }
 
-                CameraPreview(screenViewModel)
+//                CameraPreview(screenViewModel)
                 Column {
 
                 HeaderScreen{navController.popBackStack(Screen.Handla.route , false)}
