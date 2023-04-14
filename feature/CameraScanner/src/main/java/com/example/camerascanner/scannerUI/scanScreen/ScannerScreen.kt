@@ -5,40 +5,34 @@ import android.Manifest
 import android.app.Activity
 import android.util.Log
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Alignment.Companion.CenterEnd
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.example.core.domain.navigation.Screen
 import com.example.camerascanner.R
 import com.example.camerascanner.scannerUI.BarCodeAnalyser
-import com.example.camerascanner.scannerUI.BottomScreen
-import com.example.camerascanner.scannerUI.ProductDetailsCard
+import com.example.camerascanner.scannerUI.component.BottomScreen
+import com.example.camerascanner.scannerUI.component.ProductDetailsCard
 import com.example.camerascanner.scannerUI.component.BasketWithBadge
-import com.example.camerascanner.scannerUI.component.Pulsating
-import com.example.camerascanner.scannerUI.model.ProductInformation
+import com.example.camerascanner.scannerUI.component.CameraFocus
+import com.example.camerascanner.scannerUI.component.HeaderScreen
+import com.example.camerascanner.scannerUI.core.ProductInformation
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -49,15 +43,15 @@ import java.util.concurrent.Executors
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun ScannerScreen() {
+fun ScannerScreen(navController: NavController) {
 
-
-//    WindowCompat.setDecorFitsSystemWindows((LocalContext.current as Activity).window, false)
 
     val screenViewModel: ScannerScreenViewModel = hiltViewModel()
     val act = (LocalContext.current as Activity)
     val view = LocalView.current
     val systemUiController = rememberSystemUiController()
+    val basketCountRemember = remember { mutableStateOf(0) }
+
 
     DisposableEffect(view) {
         WindowCompat.setDecorFitsSystemWindows(act.window, false)
@@ -84,23 +78,24 @@ fun ScannerScreen() {
     Surface(color = Color.Transparent) {
         val newProduct = screenViewModel.productInformation.value
         val isNewProduct = screenViewModel.isNewProduct.value
+        val basketCount = screenViewModel.basketCount.value
 
             Box {
-//            Spacer(modifier = Modifier.height(10.dp))
 
 
 
                 CameraPreview(screenViewModel)
                 Column {
 
-                HeaderScreen()
+                HeaderScreen{navController.popBackStack(Screen.Handla.route , false)}
+
                    Column (
                        verticalArrangement = Arrangement.Center,
                        modifier = Modifier
                            .fillMaxWidth()
                            .fillMaxHeight(0.6f)
                    ){
-                       bar()
+                       CameraFocus()
                    }
                 }
 
@@ -118,16 +113,24 @@ fun ScannerScreen() {
                             ProductDetailsCard(show = isNewProduct, product = it)
                             if (isNewProduct)
                                 LaunchedEffect(key1 = Unit) {
+                                    var count = basketCountRemember.value
+                                    basketCountRemember.value = ++count
+                                    screenViewModel.setBasketCount(count)
+
                                     delay(2000)
+
+
                                     screenViewModel.setIsNewProduct(false)
-//                                    screenViewModel.setProductInformation(null)
+
                                 }
                         }
 
                         Row(
-                            modifier = Modifier.fillMaxWidth().padding(end = 16.dp, bottom = 8.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(end = 16.dp, bottom = 8.dp),
                         horizontalArrangement = Arrangement.End) {
-                            BasketWithBadge()
+                            BasketWithBadge(basketCount)
                         }
                         BottomScreen()
                     }
@@ -141,45 +144,6 @@ fun ScannerScreen() {
     }
 
 
-}
-
-
-@Composable
-fun HeaderScreen(){
-    Box(
-        modifier = Modifier
-            .background(MaterialTheme.colors.surface)
-            .fillMaxWidth()
-            .requiredHeight(100.dp),
-
-        ) {
-
-
-
-        Text( modifier = Modifier
-            .background(Color.Transparent)
-            .align(Center)
-            ,
-            text = "Handla Online",
-            fontSize = 18.sp,
-            color = Color.White,
-        )
-
-
-        Image(
-            painter = painterResource(id = R.drawable.close),
-            contentDescription = "Close",
-            modifier = Modifier
-                .size(30.dp)
-                .padding(8.dp)
-                .align(CenterEnd)
-                .clickable { }
-
-        )
-
-
-
-    }
 }
 
 
@@ -224,14 +188,13 @@ fun CameraPreview(screenViewModel: ScannerScreenViewModel) {
 
                         barcode.rawValue?.let { barcodeValue ->
                             barCodeVal.value = barcodeValue
-                             val newProductCopy = newProduct?.copy(
+
+                            val newProductCopy = newProduct?.copy(
                                  productImage = R.drawable.product_ic,
                                  code = barcodeValue
                              )
                             screenViewModel.setProductInformation(newProductCopy!!)
-                            screenViewModel.setIsNewProduct(true)
-                            Toast.makeText(context, barcodeValue, Toast.LENGTH_SHORT).show()
-                        }
+                            screenViewModel.setIsNewProduct(true)                        }
                     }
                 }
 
@@ -251,7 +214,7 @@ fun CameraPreview(screenViewModel: ScannerScreenViewModel) {
                         imageAnalysis
                     )
                 } catch (e: Exception) {
-                    Log.d("TAG", "CameraPreview: ${e.localizedMessage}")
+                    Log.d("Scanner", "CameraPreview: ${e.localizedMessage}")
                 }
             }, ContextCompat.getMainExecutor(context))
         }
@@ -259,129 +222,5 @@ fun CameraPreview(screenViewModel: ScannerScreenViewModel) {
 
 }
 
-@Composable
-fun Screeb(){
-    Surface(color = MaterialTheme.colors.background) {
-        // Cards content
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-            ) {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(80.dp)
-                        .padding(all = 16.dp),
-                    backgroundColor = Color.Red,
-                ) {
-                    Text(text = "Card 1")
-                }
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(80.dp)
-                        .padding(all = 16.dp),
-                    backgroundColor = Color.Green,
-                ) {
-                    Text(text = "Card 2")
-                }
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(80.dp)
-                        .padding(all = 16.dp),
-                    backgroundColor = Color.Blue,
-                ) {
-                    Text(text = "Card 3")
-                }
-            }
-            // Buttons content
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Button(
-                    onClick = {},
-                    modifier = Modifier.padding(horizontal = 8.dp)
-                ) {
-                    Text(text = "Button 1")
-                }
-                Button(
-                    onClick = {},
-                    modifier = Modifier.padding(horizontal = 8.dp)
-                ) {
-                    Text(text = "Button 3")
-                }
-                Button(
-                    onClick = {},
-                    modifier = Modifier.padding(horizontal = 8.dp)
-                ) {
-                    Text(text = "Button 2")
-                }
-            }
-        }
-    }
-}
-
-@Preview
-@Composable
-fun ComposablePreview() {
-    ScannerScreen()
-//    Screeb()
-}
-
-@Composable
-fun bar(){
-    Box(
-        modifier = Modifier
-            .fillMaxWidth(),
-        contentAlignment = Center) {
-        Pulsating() {
-
-            Image(
-                painter = painterResource(id = R.drawable.cam_border),
-                contentDescription = "borders",
-                modifier = Modifier
-                    .size(200.dp, 200.dp)
-                    .padding(8.dp)
-                    .clickable { }
-
-            )
-
-        }
-
-//        Column(
-//            verticalArrangement = Arrangement.Center,
-//        ) {
-            Image(
-                painter = painterResource(id = R.drawable.barcode),
-                contentDescription = "Barcode",
-                modifier = Modifier
-                    .size(150.dp, 200.dp)
-                    .padding(8.dp)
-
-            )
-//
-//
-//
-//            Image(
-//                painter = painterResource(id = R.drawable.cam_desc),
-//                contentDescription = "Close",
-//                modifier = Modifier
-//                    .size(100.dp, 100.dp)
-//                    .padding(8.dp)
-//
-//            )
-//        }
-    }
-}
 
 
-@Preview
-@Composable
-fun ComposableBarPreview() {
-   bar()
-}

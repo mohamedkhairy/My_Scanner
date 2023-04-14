@@ -31,11 +31,11 @@ class BarCodeAnalyser(
                         if (barcodes.isNotEmpty()) {
                             onBarcodeDetected(barcodes)
                         } else {
-                            Log.d("TAG", "analyze: No barcode Scanned")
+                            Log.d("Scanner", "analyze: No barcode Scanned")
                         }
                     }
                     .addOnFailureListener { exception ->
-                        Log.d("TAG", "BarcodeAnalyser: Something went wrong $exception")
+                        Log.d("Scanner", "BarcodeAnalyser: Something went wrong $exception")
                     }
                     .addOnCompleteListener {
                         image.close()
