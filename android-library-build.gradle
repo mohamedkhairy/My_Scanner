@@ -3,12 +3,8 @@ import dependencies.BuildVersion
 import dependencies.AndroidX
 import dependencies.Google
 import dependencies.Hilt
-import dependencies.Kotlinx
-import dependencies.Ktor
-import dependencies.Serialization
 import dependencies.Kotlin
 import dependencies.Compose
-import dependencies.Coil
 import dependencies.Navigation
 
 apply plugin: 'com.android.library'

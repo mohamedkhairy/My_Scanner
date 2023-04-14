@@ -3,11 +3,9 @@ import dependencies.AndroidX
 import dependencies.Google
 import dependencies.Hilt
 import dependencies.Kotlinx
-import dependencies.Ktor
 import dependencies.Serialization
 import dependencies.Kotlin
 import dependencies.Compose
-import dependencies.Coil
 import dependencies.Navigation
 import dependencies.Modules
 
@@ -103,8 +101,6 @@ dependencies {
     kapt(Hilt.compiler)
 
 
-    implementation(Coil.coil)
-
 
     implementation(Kotlinx.coroutinesCore)
     implementation(Compose.composeUi)
@@ -118,11 +114,6 @@ dependencies {
 
     implementation(Serialization.serialization)
 
-    implementation(Ktor.core)
-    implementation(Ktor.clientSerialization)
-    implementation(Ktor.android)
-    implementation(Ktor.ktorJson)
-    implementation(Ktor.logging)
 
 
     implementation (Navigation.navigationCompose)
