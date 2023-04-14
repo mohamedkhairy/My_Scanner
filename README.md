@@ -5,6 +5,8 @@
 <h4> Compose navigation system
 <h4> Google MLkit and Camera Analysis to read Barcode
 <h4> Dagger Hilt
+<h4> workinng hours: 20
+<h4> APK link: https://github.com/mohamedkhairy/My_Scanner/raw/master/app/release/my_scanner.apk
 
 
 <h2> [TODO - List] 
@@ -21,7 +23,7 @@
 
 *********************************
 
-<h5> APK link: https://github.com/mohamedkhairy/My_Scanner/raw/master/app/release/my_scanner.apk
+
 
 #Screenshots
 ![screens](https://user-images.githubusercontent.com/8893078/231925468-c7d0acba-49f4-4961-84b8-bb3aa33802f4.png)
