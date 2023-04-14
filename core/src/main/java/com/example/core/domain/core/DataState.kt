@@ -1,4 +1,4 @@
-package com.codingwithmitch.core.domain
+package com.example.core.domain.core
 
 
 sealed class DataState<T> {
