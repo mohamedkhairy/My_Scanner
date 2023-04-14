@@ -1,8 +1,6 @@
 package com.example.camerascanner.scannerUI.component
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.material.Badge
 import androidx.compose.material.BadgedBox
 import androidx.compose.material.Card
@@ -13,16 +11,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.camerascanner.scannerUI.theme.ever_green
+import com.example.camerascanner.scannerUI.theme.fern_green
+import com.example.camerascanner.scannerUI.theme.light_green
 
 @Composable
-fun BasketWithBadge(){
+fun BasketWithBadge(count: Int) {
 
     BadgedBox(
         badge = {
-            Badge(
-                backgroundColor = Color.Green
-            )
-            { Text("5") }
+            if (count != 0) {
+
+                Badge(
+                    backgroundColor = fern_green
+                )
+                {
+                    Text(
+                        text = "$count",
+                        color = light_green
+                    )
+
+                }
+            }
         },
     ) {
         Card(
@@ -33,7 +43,7 @@ fun BasketWithBadge(){
         {
             Text(
                 text = "Till varukorg",
-                color = Color.DarkGray,
+                color = ever_green,
                 fontSize = 18.sp,
                 modifier = Modifier.padding(8.dp)
             )
@@ -46,5 +56,5 @@ fun BasketWithBadge(){
 @Composable
 fun ComposableBadgePreview() {
 
-    BasketWithBadge()
+    BasketWithBadge(1)
 }

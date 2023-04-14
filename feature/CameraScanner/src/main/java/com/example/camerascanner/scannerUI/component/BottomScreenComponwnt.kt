@@ -1,61 +1,36 @@
-package com.example.camerascanner.scannerUI
+package com.example.camerascanner.scannerUI.component
 
-import android.util.Log
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.*
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
-import androidx.compose.ui.Alignment.Companion.CenterVertically
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.camerascanner.R
-import com.example.camerascanner.scannerUI.model.OptionsData
+import com.example.camerascanner.scannerUI.core.OptionsStates
+import com.example.camerascanner.scannerUI.theme.light_green
 
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun BottomScreen() {
-//    val scope = rememberCoroutineScope()
-
-//    val optionsDataList = listOf<OptionsData>(
-//        OptionsData(R.drawable.empty_basket, "Handla", 60.dp, false),
-//        OptionsData(R.drawable.option2, "Hållberhetsdeklaration", 60.dp, false)
-//    )
-//    var indexRemember by remember { mutableStateOf(0) }
-
-//    val isNeedExpansion = rememberSaveable{ mutableStateOf(false) }
-
-//    val odl by  mutableStateOf(optionsDataList)
 
 
-
-
-//    val animatedSizeDp: Dp by animateDpAsState(
-//        targetValue =
-//        if (isNeedExpansion.value)  80.dp
-//        else  60.dp
-//    )
-
-
-
-    val odl =
+    val optionsStatesList =
         remember {
-        mutableStateListOf<OptionsData>(
-            OptionsData(R.drawable.empty_basket, "Handla", 60.dp, false),
-            OptionsData(R.drawable.option2, "Hållberhetsdeklaration", 60.dp, false)
+        mutableStateListOf<OptionsStates>(
+            OptionsStates(R.drawable.empty_basket, "Handla", 80.dp, true),
+            OptionsStates(R.drawable.option2, "Hållberhetsdeklaration", 60.dp, false)
         )
     }
 
@@ -73,34 +48,22 @@ fun BottomScreen() {
 
 
         LazyRow(modifier = Modifier.align(Center)) {
-            itemsIndexed(items = odl) { index, item ->
+            itemsIndexed(items = optionsStatesList) { index, item ->
                 Column(
                     Modifier.requiredHeight(90.dp).padding(8.dp).align(Center),
                     verticalArrangement = Arrangement.Center
 
                 ) {
-                    CardIcon(odl[index].sizeDp, item.icon){
+                    CardIcon(optionsStatesList[index].sizeDp, item.icon){
 
-                        item.apply {
+                            item.apply {
 
-                            if (isExpanded){
-                                odl[index] = copy(sizeDp = 60.dp, isExpanded =  false)
-//                                sizeDp = 60.dp
-//                                isExpanded = false
-                            }else {
-                                odl[index] = copy(sizeDp = 80.dp, isExpanded =  true)
-
-//                                sizeDp = 80.dp
-//                                isExpanded = true
+                                if (isExpanded) {
+                                    optionsStatesList[index] = copy(sizeDp = 60.dp, isExpanded = false)
+                                } else {
+                                    optionsStatesList[index] = copy(sizeDp = 80.dp, isExpanded = true)
+                                }
                             }
-//                            val aCopy = this.copy()
-//                            odl[index] = aCopy
-
-                        }
-//                        indexRemember = index
-//                        isNeedExpansion.value = !isNeedExpansion.value
-
-
 
                     }
                 }
@@ -120,7 +83,7 @@ fun CardIcon(dpSize: Dp , imageIcon: Int, onClick:() -> Unit){
     Card(modifier = Modifier
         .size(dpSize)
         .clickable { onClick() },
-        backgroundColor = Color.White,
+        backgroundColor = light_green,
         elevation = 12.dp
     )
     {
@@ -136,52 +99,6 @@ fun CardIcon(dpSize: Dp , imageIcon: Int, onClick:() -> Unit){
     }
 }
 
-
-
-//@Composable
-//private fun AnimateDpAsState() {
-//    val isNeedExpansion = rememberSaveable{ mutableStateOf(false) }
-//
-//    val animatedSizeDp: Dp by animateDpAsState(targetValue = if (isNeedExpansion.value) 200.dp else 100.dp)
-//
-//    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-//        CircleImage(animatedSizeDp)
-//        Button(
-//            onClick = {
-//                isNeedExpansion.value = !isNeedExpansion.value
-//            },
-//            modifier = Modifier
-//                .padding(top = 50.dp)
-//                .width(300.dp)
-//        ) {
-//            Text(text = "animateDpAsState")
-//        }
-//    }
-//}
-//
-//@Composable
-//fun CircleImage(imageSize: Dp) {
-//    val animatableSize = remember { Animatable(Size.Zero, Size.VectorConverter) }
-//    val scope = rememberCoroutineScope()
-//
-//    Image(
-//        painter = painterResource(R.drawable.scan_new),
-//        contentDescription = "Circle Image",
-//        contentScale = ContentScale.Crop,
-//        modifier = Modifier
-//            .size(imageSize)
-//            .onSizeChanged {
-//                Log.d("xxx" , "0000")
-//                Log.d("xxx" , "${it}")
-//
-//                scope.launch {
-//                    animatableSize.snapTo(it.toSize())
-//                }
-//            }
-//            .clip(CircleShape)
-//            .border(5.dp, Color.Gray, CircleShape)
-//    )
-//}
 
 
 
